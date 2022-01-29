@@ -5,6 +5,7 @@ import { DeleteIcon, DoneIcon, MoreIcon } from './icons';
 import { Box, ButtonBox, TextBox, TextButton } from './';
 import ProgressCircle from 'react-native-progress-circle';
 import { Confirm, ModalButton, NewTodoList } from './modals';
+import { useNavigation } from '@react-navigation/native';
 
 export function TodoLists({
   todoLists,
@@ -12,6 +13,9 @@ export function TodoLists({
   addTodoListHandler,
   removeTodoListHandler,
 }) {
+  const navigation = useNavigation();
+  const goToDetail = _id => () => navigation.navigate('TodoList', { _id });
+
   return (
     <Box>
       <FlatList
@@ -22,6 +26,7 @@ export function TodoLists({
             item={item}
             index={index}
             removeTodoListHandler={removeTodoListHandler}
+            goToDetail={goToDetail}
           />
         )}
         ListEmptyComponent={ListEmptyComponent}
@@ -32,7 +37,12 @@ export function TodoLists({
   );
 }
 
-function RenderItem({ item: todoList, index, removeTodoListHandler }) {
+function RenderItem({
+  item: todoList,
+  index,
+  removeTodoListHandler,
+  goToDetail,
+}) {
   const counts = todoList.todos.reduce(
     (acc, item) => {
       item.isCompleted ? acc.completed++ : acc.unCompleted++;
@@ -66,6 +76,7 @@ function RenderItem({ item: todoList, index, removeTodoListHandler }) {
         )}
       </ProgressCircle>
       <TextBox
+        onPress={goToDetail(todoList._id)}
         ml={10}
         flex={1}
         fontSize={16}

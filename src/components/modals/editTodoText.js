@@ -1,54 +1,55 @@
 import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
-import { Box, TextBox, TextButton, TextInput, TextInputBox } from '../';
+import { Box, TextBox, TextButton, TextInput } from '../';
 
-export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
-  const [title, setTitle] = useState('');
+export function EditTodoText({
+  openModal,
+  closeModal,
+  todoListID,
+  todo,
+  updateTodoHandler,
+}) {
+  const [text, setText] = useState(todo.text);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const addTodoList = () => {
+  const editTodo = () => {
     setErrorMessage('');
-    if (title.length > 0) {
+    if (text.length > 0) {
       setLoading(true);
-      addTodoListHandler({ title }, () => {
+      updateTodoHandler({ _id: todoListID, todo: { ...todo, text } }, () => {
         setLoading(false);
         closeModal();
       });
     } else {
-      setErrorMessage('Title boş olamaz!');
+      setErrorMessage('Todo text boş olamaz!');
     }
   };
   return (
     <ModalFormLayout
-      heading="Yeni bir todo list oluşturun"
+      heading="Todo text düzenle"
       footer={[
-        <TextButton
-          key={1}
-          variant="text"
-          onPress={addTodoList}
-          loading={loading}>
-          Oluştur
+        <TextButton key={1} variant="text" onPress={editTodo} loading={loading}>
+          Kaydet
         </TextButton>,
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
         </TextButton>,
       ]}>
-      <Box p={10}>
+      <Box flexDirection="column" p={10}>
         <TextBox fontSize={16} color={errorMessage ? 'red' : undefined}>
-          Todo List için başlık girin:
+          Todo text'ini düzenleyin:
         </TextBox>
         <TextInput
-          mt={10}
           autoFocus
           color="black"
           fontSize={16}
-          value={title}
-          onChangeText={setTitle}
+          value={text}
+          onChangeText={setText}
           borderColor={errorMessage ? 'red' : undefined}
         />
         {errorMessage ? (
-          <TextBox fontSize={12} color="red" mt={5}>
+          <TextBox fontSize={12} color="red" mt={-5}>
             {errorMessage}
           </TextBox>
         ) : null}

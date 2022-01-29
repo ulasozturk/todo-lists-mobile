@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
-import { Box, TextBox, TextButton, TextInput, TextInputBox } from '../';
+import { Box, TextBox, TextButton, TextInput } from '../';
 
-export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
-  const [title, setTitle] = useState('');
+export function EditTodoListTitle({
+  openModal,
+  closeModal,
+  todoList,
+  updateTodoListHandler,
+}) {
+  const [title, setTitle] = useState(todoList.title);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const addTodoList = () => {
+  const editTodoList = () => {
     setErrorMessage('');
     if (title.length > 0) {
       setLoading(true);
-      addTodoListHandler({ title }, () => {
+      updateTodoListHandler({ _id: todoList._id, update: { title } }, () => {
         setLoading(false);
         closeModal();
       });
@@ -21,14 +26,14 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   };
   return (
     <ModalFormLayout
-      heading="Yeni bir todo list oluşturun"
+      heading="TodoList başlığını düzenle"
       footer={[
         <TextButton
           key={1}
           variant="text"
-          onPress={addTodoList}
+          onPress={editTodoList}
           loading={loading}>
-          Oluştur
+          Kaydet
         </TextButton>,
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
@@ -36,10 +41,9 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
       ]}>
       <Box p={10}>
         <TextBox fontSize={16} color={errorMessage ? 'red' : undefined}>
-          Todo List için başlık girin:
+          TodoList başlığını düzenleyin:
         </TextBox>
         <TextInput
-          mt={10}
           autoFocus
           color="black"
           fontSize={16}
@@ -48,7 +52,7 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
           borderColor={errorMessage ? 'red' : undefined}
         />
         {errorMessage ? (
-          <TextBox fontSize={12} color="red" mt={5}>
+          <TextBox fontSize={12} color="red" mt={-5}>
             {errorMessage}
           </TextBox>
         ) : null}

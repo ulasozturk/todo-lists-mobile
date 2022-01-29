@@ -21,8 +21,22 @@ export default function App() {
         <ThemeProvider theme={theme}>
           <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen name="TodoLists" component={TodoLists} />
-              <Stack.Screen name="TodoList" component={TodoList} />
+              <Stack.Screen
+                name="TodoLists"
+                component={TodoLists}
+                options={{
+                  title: 'Todo Lists',
+                  headerTintColor: theme.colors.primary,
+                }}
+              />
+              <Stack.Screen
+                name="TodoList"
+                component={TodoList}
+                options={{
+                  title: 'Todo List',
+                  headerTintColor: theme.colors.primary,
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </ThemeProvider>
