@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
-import { Box, TextBox, TextButton, TextInput, TextInputBox } from '../';
+import { Box, TextBox, TextButton, TextInputBox } from '../';
 
 export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   const [title, setTitle] = useState('');
@@ -33,19 +33,23 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
         </TextButton>,
-      ]}>
+      ]}
+      minWidth="80%">
       <Box p={10}>
-        <TextBox fontSize={16} color={errorMessage ? 'red' : undefined}>
+        <TextBox fontSize={18} color={errorMessage ? 'red' : 'primary'}>
           Todo List için başlık girin:
         </TextBox>
-        <TextInput
+        <TextInputBox
           mt={10}
-          autoFocus
-          color="black"
+          // autoFocus
+          color="primary"
           fontSize={16}
+          p={10}
           value={title}
           onChangeText={setTitle}
-          borderColor={errorMessage ? 'red' : undefined}
+          borderWidth={2}
+          borderRadius={10}
+          borderColor={errorMessage ? 'red' : 'primary'}
         />
         {errorMessage ? (
           <TextBox fontSize={12} color="red" mt={5}>

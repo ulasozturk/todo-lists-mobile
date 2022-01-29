@@ -16,14 +16,19 @@ export function ModalFormLayout({
       maxWidth="80%"
       minHeigth="50%"
       maxHeight="80%"
-      {...containerProps}>
-      <Box p={10}>
-        <TextBox fontSize={24} fontWeight="bold">
+      {...containerProps}
+      {...rest}>
+      <Box p={10} borderBottomWidth={2} borderColor="primary">
+        <TextBox fontSize={24} fontWeight="bold" color="primary">
           {heading}
         </TextBox>
       </Box>
       {children}
-      <Box flexDirection="row-reverse" borderTopWidth={1} p={5}>
+      <Box
+        flexDirection="row-reverse"
+        p={5}
+        borderTopWidth={2}
+        borderColor="primary">
         {footer}
       </Box>
     </Box>

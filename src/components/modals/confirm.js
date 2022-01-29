@@ -27,9 +27,12 @@ export function Confirm({
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
         </TextButton>,
-      ]}>
+      ]}
+      maxWidth="90%">
       <Box p={20}>
-        <TextBox fontSize={20}>{contentText}</TextBox>
+        <TextBox fontSize={20} color="primary">
+          {contentText}
+        </TextBox>
       </Box>
     </ModalFormLayout>
   );

@@ -1,11 +1,11 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, TouchableHighlight } from 'react-native';
 import { hslaAdjust } from '../utils/hslaAdjust';
-import { DeleteIcon, DoneIcon, MoreIcon } from './icons';
-import { Box, ButtonBox, TextBox, TextButton } from './';
-import ProgressCircle from 'react-native-progress-circle';
+import { AddIcon, DeleteIcon, DoneIcon, MoreIcon } from './icons';
+import { Box, ButtonBox, ProgressCircle, TextBox } from './';
 import { Confirm, ModalButton, NewTodoList } from './modals';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'styled-components';
 
 export function TodoLists({
   todoLists,
@@ -15,9 +15,10 @@ export function TodoLists({
 }) {
   const navigation = useNavigation();
   const goToDetail = _id => () => navigation.navigate('TodoList', { _id });
+  const theme = useTheme();
 
   return (
-    <Box>
+    <>
       <FlatList
         data={todoLists}
         keyExtractor={i => i._id}
@@ -31,9 +32,23 @@ export function TodoLists({
         )}
         ListEmptyComponent={ListEmptyComponent}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 75 }}
       />
-      <ListFooterComponent addTodoListHandler={addTodoListHandler} />
-    </Box>
+      <ModalButton
+        modalContent={<NewTodoList addTodoListHandler={addTodoListHandler} />}>
+        <ButtonBox
+          as={TouchableHighlight}
+          bg={theme.colors.primary}
+          underlayColor={hslaAdjust({ color: theme.colors.primary, l: 40 })}
+          position="absolute"
+          bottom={10}
+          right={10}
+          borderRadius={40}
+          p={15}>
+          <AddIcon fill="white" width={32} height={32} />
+        </ButtonBox>
+      </ModalButton>
+    </>
   );
 }
 
@@ -43,6 +58,7 @@ function RenderItem({
   removeTodoListHandler,
   goToDetail,
 }) {
+  const theme = useTheme();
   const counts = todoList.todos.reduce(
     (acc, item) => {
       item.isCompleted ? acc.completed++ : acc.unCompleted++;
@@ -62,28 +78,42 @@ function RenderItem({
               : 10
             : 10
         }
+        color={theme.colors.primary}
+        shadowColor="#c6c6c6"
+        bgColor="#e9e9e9"
         radius={28}
-        borderWidth={3}>
+        borderWidth={4}>
         {todoList.todos.length == 0 ? (
-          <MoreIcon fill="red" />
+          <MoreIcon fill={theme.colors.primary} />
         ) : counts.unCompleted == 0 ? (
-          <DoneIcon fill="red" />
+          <DoneIcon fill={theme.colors.primary} />
         ) : (
           <>
-            <TextBox fontSize={20}>{counts.unCompleted}</TextBox>
-            <TextBox fontSize={10}>kalan</TextBox>
+            <TextBox fontSize={20} color="black">
+              {counts.unCompleted}
+            </TextBox>
+            <TextBox mt={-3} fontSize={10} color="black">
+              kalan
+            </TextBox>
           </>
         )}
       </ProgressCircle>
-      <TextBox
+      <ButtonBox
         onPress={goToDetail(todoList._id)}
-        ml={10}
         flex={1}
-        fontSize={16}
-        numberOfLines={1}
-        ellipsizeMode="tail">
-        {todoList.title}
-      </TextBox>
+        p={20}
+        bg={hslaAdjust({ color: theme.colors.primary, l: 60, s: -40 })}
+        borderRadius={10}
+        mx={5}
+        justifyContent="center">
+        <TextBox
+          color="primary"
+          fontSize={16}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {todoList.title}
+        </TextBox>
+      </ButtonBox>
       <ModalButton
         modalContent={
           <Confirm
@@ -92,22 +122,14 @@ function RenderItem({
             onConfirm={removeTodoList}
           />
         }>
-        <ButtonBox p={10} bg="#ddd">
-          <DeleteIcon fill="red" />
+        <ButtonBox
+          p={10}
+          bg={hslaAdjust({ color: theme.colors.primary, l: 60, s: -40 })}
+          borderRadius={10}
+          alignSelf="stretch"
+          justifyContent="center">
+          <DeleteIcon fill={theme.colors.primary} />
         </ButtonBox>
-      </ModalButton>
-    </Box>
-  );
-}
-
-function ListFooterComponent({ addTodoListHandler }) {
-  return (
-    <Box p={10}>
-      <ModalButton
-        modalContent={<NewTodoList addTodoListHandler={addTodoListHandler} />}>
-        <TextButton fullWidth variant="outlined" p={20}>
-          Yeni bir Todo List oluştur
-        </TextButton>
       </ModalButton>
     </Box>
   );
@@ -120,177 +142,3 @@ function ListEmptyComponent() {
     </Box>
   );
 }
-
-const data = [
-  {
-    _id: '61d6c49e6c46e726d82883ba',
-    user: '61d42b21de6ebb22a8fff786',
-    title: 'selam 1 fasdfasdfhfhjasd fasdf fasdf asdasd fasd ',
-    todos: [
-      {
-        isCompleted: true,
-        _id: '61da0644ab05521970873feb',
-        text: 'slemadmgfbasdfasdf',
-      },
-      {
-        isCompleted: true,
-        _id: '61db4d26c740a822f87434a3',
-        text: 'asdgadsfg jhvhjv ',
-      },
-      {
-        isCompleted: true,
-        _id: '61dfe37b0172251964347f79',
-        text: 'asdfasdfgdfg dfgasdf asdf',
-      },
-      {
-        isCompleted: true,
-        _id: '61dfe4800172251964347f7f',
-        text: 'sadfsa sdfsadas dfasdf asdf',
-      },
-      {
-        isCompleted: false,
-        _id: '61dfe4820172251964347f80',
-        text: 'adsfasdf asdf as asdfsdsdafsadf',
-      },
-      {
-        isCompleted: true,
-        _id: '61dfeab50172251964347f98',
-        text: 'asdfasdf',
-      },
-    ],
-    createdAt: '2022-01-06T10:29:50.878Z',
-    updatedAt: '2022-01-22T13:28:32.192Z',
-    __v: 73,
-  },
-  {
-    _id: '61da0cd736121526148a5b0c',
-    user: '61d42b21de6ebb22a8fff786',
-    title: 'sdfsdf',
-    todos: [
-      {
-        isCompleted: false,
-        _id: '61da0ce536121526148a5b10',
-        text: 'f sadf sad',
-      },
-      {
-        isCompleted: true,
-        _id: '61da0ce836121526148a5b11',
-        text: 's dfsd fsd',
-      },
-    ],
-    createdAt: '2022-01-08T22:14:47.258Z',
-    updatedAt: '2022-01-08T22:15:05.438Z',
-    __v: 7,
-  },
-  {
-    _id: '61e325dbd52cbd322c6659aa',
-    user: '61d42b21de6ebb22a8fff786',
-    title: 'asdfasdasdf',
-    todos: [
-      {
-        isCompleted: false,
-        _id: '61e5ce35c696dc00042ebaea',
-        text: 'Kmnhb',
-      },
-    ],
-    createdAt: '2022-01-15T19:51:55.353Z',
-    updatedAt: '2022-01-17T20:14:45.929Z',
-    __v: 1,
-  },
-  {
-    _id: '61e5905f540149000f567e2',
-    user: '61d42b21de6ebb22a8fff786',
-    title: 'fdgdfsg g sdg dsf g',
-    todos: [
-      {
-        isCompleted: true,
-        _id: '61e590635401490004f567e6',
-        text: 'sdfsd',
-      },
-    ],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e5905f54490004f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e5905f540104f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e5905f54014f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e59051490004f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e5990004f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61ef5401490004f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '6905f5401490004f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e59f54014900f567e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-  {
-    _id: '61e590f5401490067e',
-    user: '61d42b21de6ebb22a8fff86',
-    title: 'fdgdfsg g sdg dsf g fasd f',
-    todos: [],
-    createdAt: '2022-01-17T15:50:55.140Z',
-    updatedAt: '2022-01-17T15:51:40.580Z',
-    __v: 8,
-  },
-];
