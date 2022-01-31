@@ -35,24 +35,16 @@ export function EditTodoText({
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
         </TextButton>,
-      ]}>
-      <Box flexDirection="column" p={10}>
-        <TextBox fontSize={16} color={errorMessage ? 'red' : undefined}>
-          Todo text'ini düzenleyin:
-        </TextBox>
+      ]}
+      minWidth="80%">
+      <Box p={10}>
         <TextInput
-          autoFocus
-          color="black"
-          fontSize={16}
+          label="Todo text'i düzenleyin"
           value={text}
           onChangeText={setText}
-          borderColor={errorMessage ? 'red' : undefined}
+          errorMessage={errorMessage}
+          onSubmitEditing={editTodo}
         />
-        {errorMessage ? (
-          <TextBox fontSize={12} color="red" mt={-5}>
-            {errorMessage}
-          </TextBox>
-        ) : null}
       </Box>
     </ModalFormLayout>
   );

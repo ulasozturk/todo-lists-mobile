@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
-import { Box, TextBox, TextButton, TextInputBox } from '../';
+import { Box, TextButton, TextInput } from '../';
 
 export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   const [title, setTitle] = useState('');
@@ -19,6 +19,7 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
       setErrorMessage('Title boş olamaz!');
     }
   };
+
   return (
     <ModalFormLayout
       heading="Yeni bir todo list oluşturun"
@@ -34,28 +35,16 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
           İptal
         </TextButton>,
       ]}
-      minWidth="80%">
+      minWidth="80%"
+      maxWidth="100%">
       <Box p={10}>
-        <TextBox fontSize={18} color={errorMessage ? 'red' : 'primary'}>
-          Todo List için başlık girin:
-        </TextBox>
-        <TextInputBox
-          mt={10}
-          // autoFocus
-          color="primary"
-          fontSize={16}
-          p={10}
+        <TextInput
+          label="Todo List için başlık girin:"
           value={title}
           onChangeText={setTitle}
-          borderWidth={2}
-          borderRadius={10}
-          borderColor={errorMessage ? 'red' : 'primary'}
+          errorMessage={errorMessage}
+          onSubmitEditing={addTodoList}
         />
-        {errorMessage ? (
-          <TextBox fontSize={12} color="red" mt={5}>
-            {errorMessage}
-          </TextBox>
-        ) : null}
       </Box>
     </ModalFormLayout>
   );

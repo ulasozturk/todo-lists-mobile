@@ -24,6 +24,7 @@ export function EditTodoListTitle({
       setErrorMessage('Title boş olamaz!');
     }
   };
+
   return (
     <ModalFormLayout
       heading="TodoList başlığını düzenle"
@@ -38,24 +39,16 @@ export function EditTodoListTitle({
         <TextButton key={2} variant="text" onPress={closeModal}>
           İptal
         </TextButton>,
-      ]}>
+      ]}
+      minWidth="80%">
       <Box p={10}>
-        <TextBox fontSize={16} color={errorMessage ? 'red' : undefined}>
-          TodoList başlığını düzenleyin:
-        </TextBox>
         <TextInput
-          autoFocus
-          color="black"
-          fontSize={16}
+          label="TodoList başlığını düzenleyin:"
           value={title}
           onChangeText={setTitle}
-          borderColor={errorMessage ? 'red' : undefined}
+          errorMessage={errorMessage}
+          onSubmitEditing={editTodoList}
         />
-        {errorMessage ? (
-          <TextBox fontSize={12} color="red" mt={-5}>
-            {errorMessage}
-          </TextBox>
-        ) : null}
       </Box>
     </ModalFormLayout>
   );

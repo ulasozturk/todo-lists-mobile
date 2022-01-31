@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableHighlight } from 'react-native';
 import { hslaAdjust } from '../utils/hslaAdjust';
-import { AddIcon, DeleteIcon, DoneIcon, MoreIcon } from './icons';
+import { AddIcon, DeleteIcon } from './icons';
 import { Box, ButtonBox, ProgressCircle, TextBox } from './';
 import { Confirm, ModalButton, NewTodoList } from './modals';
 import { useNavigation } from '@react-navigation/native';

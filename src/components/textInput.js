@@ -1,20 +1,40 @@
 import React from 'react';
-import { TextInputBox } from './styled-components';
+import { Box, TextBox, TextInputBox } from './';
 
-export function TextInput({ value, onChangeText, placeholder, ...rest }) {
+export function TextInput({
+  value,
+  onChangeText,
+  label,
+  placeholder,
+  errorMessage,
+  autoFocus,
+  onSubmitEditing,
+  containerProps,
+}) {
   return (
-    <TextInputBox
-      value={value}
-      onChangeText={onChangeText}
-      placeholder={placeholder}
-      color="hsl(32,70%,50%)"
-      placeholderTextColor="hsl(32,80%,50%)"
-      bg="hsl(32,100%,80%)"
-      fontSize={18}
-      p={20}
-      borderRadius={20}
-      width="100%"
-      {...rest}
-    />
+    <Box {...containerProps}>
+      <TextBox fontSize={18} color={errorMessage ? 'red' : 'primary'}>
+        {label}
+      </TextBox>
+      <TextInputBox
+        mt={10}
+        p={10}
+        fontSize={16}
+        color="primary"
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        onSubmitEditing={onSubmitEditing}
+        borderWidth={2}
+        borderRadius={10}
+        borderColor={errorMessage ? 'red' : 'primary'}
+        autoFocus={autoFocus}
+      />
+      {errorMessage ? (
+        <TextBox fontSize={12} color="red" mt={5}>
+          {errorMessage}
+        </TextBox>
+      ) : null}
+    </Box>
   );
 }

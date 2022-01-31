@@ -19,6 +19,7 @@ export function TextButton({
   radius = 40,
   p = 12,
   loading,
+  textProps,
   ...rest
 }) {
   return (
@@ -50,7 +51,8 @@ export function TextButton({
           <TextBox
             textAlign={textAlign}
             color={variant == 'contained' ? 'white' : color}
-            fontSize={fontSize}>
+            fontSize={fontSize}
+            {...textProps}>
             {children}
           </TextBox>
           {subText ? (

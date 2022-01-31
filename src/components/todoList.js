@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { Box, TextBox, TextButton, TextInputBox } from './';
+import {
+  Box,
+  ButtonBox,
+  ProgressCircle,
+  TextBox,
+  TextButton,
+  TextInput,
+} from './';
 import {
   Confirm,
   EditTodoListTitle,
   EditTodoText,
   ModalButton,
 } from './modals';
-import { DeleteIcon, DoneIcon, EditIcon, MoreIcon } from './icons';
-import ProgressCircle from 'react-native-progress-circle';
+import { DeleteIcon, EditIcon } from './icons';
+import { useTheme } from 'styled-components';
+import { hslaAdjust } from '../utils/hslaAdjust';
 
 export function TodoList({
   todoList,
@@ -17,16 +25,10 @@ export function TodoList({
   updateTodoHandler,
   updateTodoListHandler,
 }) {
+  const theme = useTheme();
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const counts = todoList.todos.reduce(
-    (acc, item) => {
-      item.isCompleted ? acc.completed++ : acc.unCompleted++;
-      return acc;
-    },
-    { completed: 0, unCompleted: 0 },
-  );
 
   const addTodo = () => {
     setErrorMessage('');
@@ -47,7 +49,11 @@ export function TodoList({
   return (
     <Box as={ScrollView} p={10} keyboardShouldPersistTaps="handled">
       <Box row alignCenter>
-        <TextBox fontSize={24} color="primary">
+        <TextBox
+          fontSize={24}
+          color="primary"
+          numberOfLines={3}
+          ellipsizeMode="tail">
           {todoList.title}
         </TextBox>
         <ModalButton
@@ -57,53 +63,43 @@ export function TodoList({
               updateTodoListHandler={updateTodoListHandler}
             />
           }>
-          <EditIcon marginLeft={10} fill="red" />
+          <ButtonBox bg="primary" ml={10} p={5} borderRadius={10}>
+            <EditIcon fill="white" width={32} height={32} />
+          </ButtonBox>
         </ModalButton>
       </Box>
-      <Box>
-        <TextBox color="primary">
-          Oluşturulma tarihi: {new Date(todoList.createdAt).toLocaleString()}
+      <Box my={10}>
+        <TextBox color="primary" fontSize={16}>
+          Oluşturulma tarihi:{' '}
+          {new Date(todoList.createdAt).toLocaleDateString()} -{' '}
+          {new Date(todoList.createdAt).toLocaleTimeString()}
         </TextBox>
-        <TextBox color="primary">
+        <TextBox color="primary" fontSize={16}>
           Son güncellenme tarihi:{' '}
-          {new Date(todoList.updatedAt).toLocaleString()}
+          {new Date(todoList.updatedAt).toLocaleDateString()} -{' '}
+          {new Date(todoList.updatedAt).toLocaleTimeString()}
         </TextBox>
       </Box>
-      <Box row>
-        <TextBox>Todos</TextBox>
-        <ProgressCircle
-          percent={
-            todoList.todos.length > 0
-              ? counts.completed > 0
-                ? (counts.completed / todoList.todos.length) * 100
-                : 10
-              : 10
-          }
-          radius={28}
-          borderWidth={3}>
-          {todoList.todos.length == 0 ? (
-            <MoreIcon fill="red" />
-          ) : counts.unCompleted == 0 ? (
-            <DoneIcon fill="red" />
-          ) : (
-            <>
-              <TextBox fontSize={20}>{counts.unCompleted}</TextBox>
-              <TextBox fontSize={10}>kalan</TextBox>
-            </>
-          )}
-        </ProgressCircle>
+      <Box row my={10} alignItems="center">
+        <TextBox color="primary" fontSize={30} mr={10}>
+          Todos
+        </TextBox>
+        <ProgressCircle todos={todoList.todos} />
       </Box>
-      <Box row>
-        <TextBox>Yeni Todo: </TextBox>
-        <TextInputBox
+      <Box row my={10}>
+        <TextInput
+          label="Yeni Todo"
           value={text}
           onChangeText={setText}
-          borderWidth={2}
-          borderColor="primary"
-          borderRadius={20}
-          flex={1}
+          errorMessage={
+            errorMessage && text.length == 0 ? errorMessage : undefined
+          }
+          containerProps={{ flex: 1 }}
         />
         <TextButton
+          ml={10}
+          mt={35}
+          fontSize={20}
           variant="contained"
           borderRadius={10}
           onPress={addTodo}
@@ -111,10 +107,10 @@ export function TodoList({
           Ekle
         </TextButton>
       </Box>
-      <Box>
+      <Box my={10}>
         {todoList.todos.length > 0 ? (
           todoList.todos.map(todo => (
-            <Box key={todo._id} row>
+            <Box key={todo._id} row my={5}>
               <TextButton
                 onPress={() =>
                   updateTodoHandler({
@@ -123,10 +119,14 @@ export function TodoList({
                   })
                 }
                 flex={1}
+                fontSize={16}
                 textAlign="left"
-                style={{
-                  textDecoration: todo.isCompleted ? 'line-through' : 'none',
-                  textDecorationThickness: '3px',
+                textProps={{
+                  style: {
+                    textDecorationLine: todo.isCompleted
+                      ? 'line-through'
+                      : undefined,
+                  },
                 }}
                 variant={todo.isCompleted ? 'contained' : 'outlined'}
                 borderRadius={10}>
@@ -140,7 +140,22 @@ export function TodoList({
                     updateTodoHandler={updateTodoHandler}
                   />
                 }>
-                <EditIcon fill="red" />
+                <ButtonBox
+                  justifyContent="center"
+                  p={5}
+                  ml={5}
+                  bg={hslaAdjust({
+                    color: theme.colors.primary,
+                    l: 60,
+                    s: -40,
+                  })}
+                  borderRadius={10}>
+                  <EditIcon
+                    fill={theme.colors.primary}
+                    width={32}
+                    height={32}
+                  />
+                </ButtonBox>
               </ModalButton>
               <ModalButton
                 modalContent={
@@ -150,7 +165,22 @@ export function TodoList({
                     onConfirm={removeTodo(todo)}
                   />
                 }>
-                <DeleteIcon fill="red" />
+                <ButtonBox
+                  justifyContent="center"
+                  p={5}
+                  ml={5}
+                  bg={hslaAdjust({
+                    color: theme.colors.primary,
+                    l: 60,
+                    s: -40,
+                  })}
+                  borderRadius={10}>
+                  <DeleteIcon
+                    fill={theme.colors.primary}
+                    width={32}
+                    height={32}
+                  />
+                </ButtonBox>
               </ModalButton>
             </Box>
           ))
