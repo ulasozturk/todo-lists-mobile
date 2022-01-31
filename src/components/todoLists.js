@@ -32,7 +32,10 @@ export function TodoLists({
         )}
         ListEmptyComponent={ListEmptyComponent}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 75 }}
+        contentContainerStyle={{
+          paddingBottom: 75,
+          paddingTop: 10,
+        }}
       />
       <ModalButton
         modalContent={<NewTodoList addTodoListHandler={addTodoListHandler} />}>
@@ -59,45 +62,11 @@ function RenderItem({
   goToDetail,
 }) {
   const theme = useTheme();
-  const counts = todoList.todos.reduce(
-    (acc, item) => {
-      item.isCompleted ? acc.completed++ : acc.unCompleted++;
-      return acc;
-    },
-    { completed: 0, unCompleted: 0 },
-  );
   const removeTodoList = cb => removeTodoListHandler({ _id: todoList._id }, cb);
 
   return (
     <Box p={10} row alignCenter>
-      <ProgressCircle
-        percent={
-          todoList.todos.length > 0
-            ? counts.completed > 0
-              ? (counts.completed / todoList.todos.length) * 100
-              : 10
-            : 10
-        }
-        color={theme.colors.primary}
-        shadowColor="#c6c6c6"
-        bgColor="#e9e9e9"
-        radius={28}
-        borderWidth={4}>
-        {todoList.todos.length == 0 ? (
-          <MoreIcon fill={theme.colors.primary} />
-        ) : counts.unCompleted == 0 ? (
-          <DoneIcon fill={theme.colors.primary} />
-        ) : (
-          <>
-            <TextBox fontSize={20} color="black">
-              {counts.unCompleted}
-            </TextBox>
-            <TextBox mt={-3} fontSize={10} color="black">
-              kalan
-            </TextBox>
-          </>
-        )}
-      </ProgressCircle>
+      <ProgressCircle todos={todoList.todos} />
       <ButtonBox
         onPress={goToDetail(todoList._id)}
         flex={1}
