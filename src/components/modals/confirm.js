@@ -2,13 +2,7 @@ import React from 'react';
 import { ModalFormLayout } from './modalFormLayout';
 import { Box, TextBox, TextButton } from '../';
 
-export function Confirm({
-  openModal,
-  closeModal,
-  onConfirm,
-  contentText,
-  buttonText,
-}) {
+export function Confirm({ closeModal, onConfirm, contentText, buttonText }) {
   const [loading, setLoading] = React.useState(false);
   const onClick = () => {
     setLoading(true);

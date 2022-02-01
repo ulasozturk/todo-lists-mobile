@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
 import { Box, TextButton, TextInput } from '../';
 
-export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
+export function NewTodoList({ closeModal, addTodoListHandler }) {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

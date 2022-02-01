@@ -15,7 +15,7 @@ export function ModalButton({ children, modalContent, onPress }) {
     <>
       {isVisible ? (
         <Modal isVisible closeModal={closeModal}>
-          {React.cloneElement(modalContent, { openModal, closeModal })}
+          {React.cloneElement(modalContent, { closeModal })}
         </Modal>
       ) : null}
       {React.cloneElement(children, { onPress: openModal })}

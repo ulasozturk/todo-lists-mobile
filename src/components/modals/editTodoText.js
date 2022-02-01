@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { ModalFormLayout } from './modalFormLayout';
-import { Box, TextBox, TextButton, TextInput } from '../';
+import { Box, TextButton, TextInput } from '../';
 
 export function EditTodoText({
-  openModal,
   closeModal,
   todoListID,
   todo,
