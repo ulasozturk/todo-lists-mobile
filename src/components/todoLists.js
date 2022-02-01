@@ -13,8 +13,6 @@ export function TodoLists({
   addTodoListHandler,
   removeTodoListHandler,
 }) {
-  const navigation = useNavigation();
-  const goToDetail = _id => () => navigation.navigate('TodoList', { _id });
   const theme = useTheme();
 
   return (
@@ -27,7 +25,6 @@ export function TodoLists({
             item={item}
             index={index}
             removeTodoListHandler={removeTodoListHandler}
-            goToDetail={goToDetail}
           />
         )}
         ListEmptyComponent={ListEmptyComponent}
@@ -55,20 +52,18 @@ export function TodoLists({
   );
 }
 
-function RenderItem({
-  item: todoList,
-  index,
-  removeTodoListHandler,
-  goToDetail,
-}) {
+function RenderItem({ item: todoList, index, removeTodoListHandler }) {
   const theme = useTheme();
   const removeTodoList = cb => removeTodoListHandler({ _id: todoList._id }, cb);
+  const navigation = useNavigation();
+  const goToDetail = () =>
+    navigation.navigate('TodoList', { _id: todoList._id });
 
   return (
     <Box p={10} row alignCenter>
       <ProgressCircle todos={todoList.todos} />
       <ButtonBox
-        onPress={goToDetail(todoList._id)}
+        onPress={goToDetail}
         flex={1}
         p={20}
         bg={hslaAdjust({ color: theme.colors.primary, l: 60, s: -40 })}

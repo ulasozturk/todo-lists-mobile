@@ -25,31 +25,14 @@ export function TodoList({
   updateTodoHandler,
   updateTodoListHandler,
 }) {
-  const theme = useTheme();
-  const [text, setText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const addTodo = () => {
-    setErrorMessage('');
-    if (text.length > 0) {
-      setLoading(true);
-      addTodoHandler({ _id: todoList._id, text }, () => {
-        setText('');
-        setLoading(false);
-      });
-    } else {
-      setErrorMessage('Text boş olamaz');
-    }
-  };
-
-  const removeTodo = todo => cb =>
-    removeTodoHandler({ _id: todoList._id, todo }, cb);
-
   return (
-    <Box as={ScrollView} p={10} keyboardShouldPersistTaps="handled">
+    <Box
+      as={ScrollView}
+      contentContainerStyle={{ padding: 10 }}
+      keyboardShouldPersistTaps="handled">
       <Box row alignCenter>
         <TextBox
+          flexShrink={1}
           fontSize={24}
           color="primary"
           numberOfLines={3}
@@ -80,109 +63,25 @@ export function TodoList({
           {new Date(todoList.updatedAt).toLocaleTimeString()}
         </TextBox>
       </Box>
-      <Box row my={10} alignItems="center">
+      <Box row alignItems="center">
         <TextBox color="primary" fontSize={30} mr={10}>
           Todos
         </TextBox>
         <ProgressCircle todos={todoList.todos} />
       </Box>
-      <Box row my={10}>
-        <TextInput
-          label="Yeni Todo"
-          value={text}
-          onChangeText={setText}
-          errorMessage={
-            errorMessage && text.length == 0 ? errorMessage : undefined
-          }
-          containerProps={{ flex: 1 }}
-        />
-        <TextButton
-          ml={10}
-          mt={35}
-          fontSize={20}
-          variant="contained"
-          borderRadius={10}
-          onPress={addTodo}
-          loading={loading}>
-          Ekle
-        </TextButton>
-      </Box>
       <Box my={10}>
+        <AddTodo addTodoHandler={addTodoHandler} todoListID={todoList._id} />
+      </Box>
+      <Box>
         {todoList.todos.length > 0 ? (
           todoList.todos.map(todo => (
-            <Box key={todo._id} row my={5}>
-              <TextButton
-                onPress={() =>
-                  updateTodoHandler({
-                    _id: todoList._id,
-                    todo: { ...todo, isCompleted: !todo.isCompleted },
-                  })
-                }
-                flex={1}
-                fontSize={16}
-                textAlign="left"
-                textProps={{
-                  style: {
-                    textDecorationLine: todo.isCompleted
-                      ? 'line-through'
-                      : undefined,
-                  },
-                }}
-                variant={todo.isCompleted ? 'contained' : 'outlined'}
-                borderRadius={10}>
-                {todo.text}
-              </TextButton>
-              <ModalButton
-                modalContent={
-                  <EditTodoText
-                    todoListID={todoList._id}
-                    todo={todo}
-                    updateTodoHandler={updateTodoHandler}
-                  />
-                }>
-                <ButtonBox
-                  justifyContent="center"
-                  p={5}
-                  ml={5}
-                  bg={hslaAdjust({
-                    color: theme.colors.primary,
-                    l: 60,
-                    s: -40,
-                  })}
-                  borderRadius={10}>
-                  <EditIcon
-                    fill={theme.colors.primary}
-                    width={32}
-                    height={32}
-                  />
-                </ButtonBox>
-              </ModalButton>
-              <ModalButton
-                modalContent={
-                  <Confirm
-                    buttonText="Sil"
-                    contentText="Todo'yu silmek istediğinizden emin misiniz ?"
-                    onConfirm={removeTodo(todo)}
-                  />
-                }>
-                <ButtonBox
-                  justifyContent="center"
-                  p={5}
-                  ml={5}
-                  bg={hslaAdjust({
-                    color: theme.colors.primary,
-                    l: 60,
-                    s: -40,
-                  })}
-                  borderRadius={10}>
-                  <DeleteIcon
-                    fill={theme.colors.primary}
-                    width={32}
-                    height={32}
-                  />
-                </ButtonBox>
-              </ModalButton>
-            </Box>
+            <TodoItem
+              key={todo._id}
+              todo={todo}
+              todoListID={todoList._id}
+              updateTodoHandler={updateTodoHandler}
+              removeTodoHandler={removeTodoHandler}
+            />
           ))
         ) : (
           <TextBox>Hiç todo bulunamadı</TextBox>
@@ -196,6 +95,120 @@ export function TodoListPlaceholder() {
   return (
     <Box>
       <TextBox>hello from todo list placeholder</TextBox>
+    </Box>
+  );
+}
+
+function AddTodo({ addTodoHandler, todoListID }) {
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const addTodo = () => {
+    setErrorMessage('');
+    if (text.length > 0) {
+      setLoading(true);
+      addTodoHandler({ _id: todoListID, text }, () => {
+        setText('');
+        setLoading(false);
+      });
+    } else {
+      setErrorMessage('Text boş olamaz');
+    }
+  };
+
+  return (
+    <Box row>
+      <TextInput
+        label="Yeni Todo"
+        value={text}
+        onChangeText={setText}
+        errorMessage={
+          errorMessage && text.length == 0 ? errorMessage : undefined
+        }
+        containerProps={{ flex: 1 }}
+      />
+      <TextButton
+        ml={10}
+        mt={35}
+        fontSize={20}
+        variant="contained"
+        borderRadius={10}
+        onPress={addTodo}
+        loading={loading}>
+        Ekle
+      </TextButton>
+    </Box>
+  );
+}
+
+function TodoItem({ todo, todoListID, updateTodoHandler, removeTodoHandler }) {
+  const theme = useTheme();
+  const updateTodo = () =>
+    updateTodoHandler({
+      _id: todoListID,
+      todo: { ...todo, isCompleted: !todo.isCompleted },
+    });
+  const removeTodo = () => removeTodoHandler({ _id: todoListID, todo });
+
+  return (
+    <Box row my={5}>
+      <TextButton
+        onPress={updateTodo}
+        flex={1}
+        fontSize={16}
+        textAlign="left"
+        textProps={{
+          style: {
+            textDecorationLine: todo.isCompleted ? 'line-through' : undefined,
+          },
+        }}
+        variant={todo.isCompleted ? 'contained' : 'outlined'}
+        borderRadius={10}>
+        {todo.text}
+      </TextButton>
+      <ModalButton
+        modalContent={
+          <EditTodoText
+            todoListID={todoListID}
+            todo={todo}
+            updateTodoHandler={updateTodoHandler}
+          />
+        }>
+        <ButtonBox
+          justifyContent="center"
+          p={5}
+          ml={5}
+          bg={hslaAdjust({
+            color: theme.colors.primary,
+            l: 60,
+            s: -40,
+          })}
+          borderRadius={10}>
+          <EditIcon fill={theme.colors.primary} width={32} height={32} />
+        </ButtonBox>
+      </ModalButton>
+      <ModalButton
+        modalContent={
+          <Confirm
+            buttonText="Sil"
+            contentText="Todo'yu silmek istediğinizden emin misiniz ?"
+            onConfirm={removeTodo}
+          />
+        }>
+        <ButtonBox
+          justifyContent="center"
+          p={5}
+          ml={5}
+          bg={hslaAdjust({
+            color: theme.colors.primary,
+            l: 60,
+            s: -40,
+          })}
+          borderRadius={10}>
+          <DeleteIcon fill={theme.colors.primary} width={32} height={32} />
+        </ButtonBox>
+      </ModalButton>
     </Box>
   );
 }
