@@ -66,6 +66,7 @@ export function SignIn({ closeModal }) {
           }
         />
         <TextInput
+          mt={10}
           label="Şifrenizi giriniz"
           secureTextEntry
           value={password}
@@ -81,7 +82,11 @@ export function SignIn({ closeModal }) {
               : null
           }
         />
-        <TextButton onPress={() => setIsSignUp(true)} color="primary" fullWidth>
+        <TextButton
+          onPress={() => setIsSignUp(true)}
+          color="primary"
+          fullWidth
+          fontSize={16}>
           Bir hesabınız yoksa hemen üye olun!
         </TextButton>
       </Box>

@@ -67,6 +67,7 @@ export function SignUp({ closeModal }) {
           }
         />
         <TextInput
+          mt={10}
           label="Şifrenizi giriniz"
           secureTextEntry
           value={password}
@@ -76,6 +77,7 @@ export function SignUp({ closeModal }) {
           }
         />
         <TextInput
+          mt={10}
           label="Şifrenizi tekrar giriniz"
           secureTextEntry
           value={passwordAgain}

@@ -12,9 +12,10 @@ export function TextInput({
   keyboardType,
   secureTextEntry,
   containerProps,
+  ...rest
 }) {
   return (
-    <Box {...containerProps}>
+    <Box {...containerProps} {...rest}>
       <TextBox fontSize={18} color={errorMessage ? 'red' : 'primary'}>
         {label}
       </TextBox>
