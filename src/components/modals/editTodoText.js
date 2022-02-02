@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ModalFormLayout } from './modalFormLayout';
+import { ModalFormLayout } from './';
 import { Box, TextButton, TextInput } from '../';
 
 export function EditTodoText({

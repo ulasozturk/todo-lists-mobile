@@ -9,6 +9,8 @@ export function TextInput({
   errorMessage,
   autoFocus,
   onSubmitEditing,
+  keyboardType,
+  secureTextEntry,
   containerProps,
 }) {
   return (
@@ -29,6 +31,8 @@ export function TextInput({
         borderRadius={10}
         borderColor={errorMessage ? 'red' : 'primary'}
         autoFocus={autoFocus}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
       />
       {errorMessage ? (
         <TextBox fontSize={12} color="red" mt={5}>

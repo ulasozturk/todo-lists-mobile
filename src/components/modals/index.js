@@ -5,3 +5,7 @@ export { NewTodoList } from './newTodoList';
 export { Confirm } from './confirm';
 export { EditTodoListTitle } from './editTodoListTitle';
 export { EditTodoText } from './editTodoText';
+export { SignIn } from './signIn';
+export { Account } from './account';
+export { ChangePassword } from './changePassword';
+export { SignUp } from './signUp';

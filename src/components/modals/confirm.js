@@ -1,10 +1,10 @@
 import React from 'react';
-import { ModalFormLayout } from './modalFormLayout';
+import { ModalFormLayout } from './';
 import { Box, TextBox, TextButton } from '../';
 
 export function Confirm({ closeModal, onConfirm, contentText, buttonText }) {
   const [loading, setLoading] = React.useState(false);
-  const onClick = () => {
+  const onPress = () => {
     setLoading(true);
     onConfirm(err => {
       setLoading(false);
@@ -15,7 +15,7 @@ export function Confirm({ closeModal, onConfirm, contentText, buttonText }) {
     <ModalFormLayout
       heading="Dikkat!"
       footer={[
-        <TextButton key={1} variant="text" onPress={onClick} loading={loading}>
+        <TextButton key={1} variant="text" onPress={onPress} loading={loading}>
           {buttonText ? buttonText : 'Tamam'}
         </TextButton>,
         <TextButton key={2} variant="text" onPress={closeModal}>
