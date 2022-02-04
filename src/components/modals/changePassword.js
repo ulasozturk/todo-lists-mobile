@@ -24,8 +24,7 @@ export function ChangePassword({ closeModal }) {
         })
         .catch(err => {
           setLoading(false);
-          const { errors, code } = err.response.data;
-          setError(errors.find(i => i.code == code));
+          setError(err.response.data.error);
         });
     }
   };
@@ -51,9 +50,9 @@ export function ChangePassword({ closeModal }) {
           onChangeText={setPassword}
           errorMessage={
             error.field == 'password'
-              ? error.code == 4
+              ? error.code == 3
                 ? 'Şifre en az 6 haneli olmalıdır!'
-                : error.code == 5
+                : error.code == 4
                 ? 'Şifre yanlış!'
                 : 'Bir hata oluştu!'
               : null

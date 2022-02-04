@@ -28,8 +28,7 @@ export function SignUp({ closeModal }) {
           })
           .catch(err => {
             setLoading(false);
-            const { errors, code } = err.response.data;
-            setError(errors.find(i => i.code == code));
+            setError(err.response.data.error);
           });
       } else {
         setError({ field: 'passwordRepeat' });
@@ -58,9 +57,9 @@ export function SignUp({ closeModal }) {
           onChangeText={setEmail}
           errorMessage={
             error.field == 'email'
-              ? error.code == 1
+              ? error.code == 0
                 ? 'Email hatalı!'
-                : error.code == 2
+                : error.code == 1
                 ? 'Email zaten kullanımda!'
                 : 'Bir hata oluştu!'
               : null

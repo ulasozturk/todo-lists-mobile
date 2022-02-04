@@ -26,8 +26,7 @@ export function SignIn({ closeModal }) {
         })
         .catch(err => {
           setLoading(false);
-          const { errors, code } = err.response.data;
-          setError(errors.find(i => i.code == code));
+          setError(err.response.data.error);
         });
     }
   };
@@ -57,9 +56,9 @@ export function SignIn({ closeModal }) {
           keyboardType="email-address"
           errorMessage={
             error.field == 'email'
-              ? error.code == 1
+              ? error.code == 0
                 ? 'Email hatalı!'
-                : error.code == 3
+                : error.code == 2
                 ? 'Email bulunamadı!'
                 : 'Bir hata oluştu.'
               : null
@@ -74,9 +73,9 @@ export function SignIn({ closeModal }) {
           onSubmitEditing={onSubmit}
           errorMessage={
             error.field == 'password'
-              ? error.code == 4
+              ? error.code == 3
                 ? 'Şifre en az 6 haneli olmalıdır!'
-                : error.code == 5
+                : error.code == 4
                 ? 'Şifre yanlış!'
                 : 'Bir hata oluştu.'
               : null
