@@ -27,11 +27,12 @@ export function TodoLists({
             removeTodoListHandler={removeTodoListHandler}
           />
         )}
-        ListEmptyComponent={ListEmptyComponent}
+        ListEmptyComponent={<ListEmptyComponent loading={loading} />}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingBottom: 75,
           paddingTop: 10,
+          flex: 1,
         }}
       />
       <ModalButton
@@ -43,6 +44,7 @@ export function TodoLists({
           position="absolute"
           bottom={10}
           right={10}
+          zIndex={2}
           borderRadius={40}
           p={15}>
           <AddIcon fill="white" width={32} height={32} />
@@ -99,10 +101,35 @@ function RenderItem({ item: todoList, index, removeTodoListHandler }) {
   );
 }
 
-function ListEmptyComponent() {
-  return (
-    <Box p={20} bg="blue.3">
-      <TextBox>Hiç todo yok</TextBox>
+function ListEmptyComponent({ loading }) {
+  return loading ? (
+    <>
+      <Box pt={10} pb={75}>
+        {[1, 2, 3, 4, 5, 6].map((i, index) => (
+          <Box key={index} p={10} row alignCenter>
+            <Box borderRadius={100} bg="#ccc" width={60} height={60} />
+            <Box flex={1} height={56} bg="#ccc" borderRadius={10} mx={5} />
+            <Box p={10} bg="#ccc" borderRadius={10} alignSelf="stretch">
+              <Box width={24} height={24} />
+            </Box>
+          </Box>
+        ))}
+      </Box>
+      <Box
+        bg="#ccc"
+        position="absolute"
+        bottom={10}
+        right={10}
+        borderRadius={40}
+        p={15}>
+        <Box width={32} height={32} />
+      </Box>
+    </>
+  ) : (
+    <Box flex={1} center>
+      <TextBox color="primary" fontSize={32} textAlign="center">
+        Henüz bir Todo List oluşturmadınız
+      </TextBox>
     </Box>
   );
 }

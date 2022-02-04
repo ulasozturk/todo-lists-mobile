@@ -38,7 +38,8 @@ export function Account({ closeModal }) {
         <TextButton key={1} variant="text" onPress={closeModal}>
           Tamam
         </TextButton>,
-      ]}>
+      ]}
+      minWidth="60%">
       <Box p={10}>
         <TextBox fontSize={18} my={10} textAlign="center" color="primary">
           {auth.email}

@@ -41,6 +41,7 @@ export function ChangePassword({ closeModal }) {
           İptal
         </TextButton>,
       ]}
+      minWidth="70%"
       maxHeight="90%">
       <Box p={10}>
         <TextInput

@@ -8,7 +8,7 @@ import {
   updateTodoList,
 } from '../redux/reducers/localTodoLists';
 import axios from 'axios';
-import { TextBox, TodoList, TodoListPlaceholder } from '../components';
+import { TodoList } from '../components';
 import { useIsAuthenticated } from '../utils/hooks/useIsAuthenticated';
 import { useRoute } from '@react-navigation/native';
 
@@ -101,20 +101,16 @@ function RemoteTodoList() {
       });
   };
 
-  return todoList ? (
+  return (
     <TodoList
       todoList={todoList}
+      loading={loading}
+      errorMessage={errorMessage}
       addTodoHandler={addTodoHandler}
       updateTodoListHandler={updateTodoListHandler}
       updateTodoHandler={updateTodoHandler}
       removeTodoHandler={removeTodoHandler}
     />
-  ) : loading ? (
-    <TodoListPlaceholder />
-  ) : (
-    <TextBox color="primary" fontSize={32} textAlign="center" p={20}>
-      {errorMessage}
-    </TextBox>
   );
 }
 
@@ -144,7 +140,7 @@ function LocalTodoList() {
     if (typeof callback == 'function') callback();
   };
 
-  return todoList ? (
+  return (
     <TodoList
       todoList={todoList}
       addTodoHandler={addTodoHandler}
@@ -152,9 +148,5 @@ function LocalTodoList() {
       updateTodoHandler={updateTodoHandler}
       updateTodoListHandler={updateTodoListHandler}
     />
-  ) : (
-    <TextBox color="primary" fontSize={32} textAlign="center" p={20}>
-      Böyle bir kayıt bulunamadı!
-    </TextBox>
   );
 }

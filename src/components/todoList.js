@@ -20,15 +20,17 @@ import { hslaAdjust } from '../utils/hslaAdjust';
 
 export function TodoList({
   todoList,
+  loading,
+  errorMessage,
   addTodoHandler,
   removeTodoHandler,
   updateTodoHandler,
   updateTodoListHandler,
 }) {
-  return (
+  return todoList ? (
     <Box
       as={ScrollView}
-      contentContainerStyle={{ padding: 10 }}
+      contentContainerStyle={{ padding: 10, flex: 1 }}
       keyboardShouldPersistTaps="handled">
       <Box row alignCenter>
         <TextBox
@@ -72,29 +74,87 @@ export function TodoList({
       <Box my={10}>
         <AddTodo addTodoHandler={addTodoHandler} todoListID={todoList._id} />
       </Box>
-      <Box>
-        {todoList.todos.length > 0 ? (
-          todoList.todos.map(todo => (
+      {todoList.todos.length > 0 ? (
+        todoList.todos.map(todo => (
+          <Box key={todo._id}>
             <TodoItem
-              key={todo._id}
               todo={todo}
               todoListID={todoList._id}
               updateTodoHandler={updateTodoHandler}
               removeTodoHandler={removeTodoHandler}
             />
-          ))
-        ) : (
-          <TextBox>Hiç todo bulunamadı</TextBox>
-        )}
+          </Box>
+        ))
+      ) : (
+        <ErrorMessage errorMessage="Hiç bir todo bulunamadı" fontSize={24} />
+      )}
+    </Box>
+  ) : loading ? (
+    <TodoListPlaceholder />
+  ) : errorMessage ? (
+    <ErrorMessage errorMessage={errorMessage} />
+  ) : null;
+}
+
+function TodoListPlaceholder() {
+  return (
+    <Box p={10}>
+      <Box row alignCenter>
+        <Box flexShrink={1} width={250} height={30} bg="#ccc" />
+        <Box bg="#ccc" ml={10} p={15} borderRadius={10}>
+          <Box bg="#ccc" width={20} height={20} />
+        </Box>
+      </Box>
+      <Box my={10}>
+        <Box bg="#ccc" width={280} height={16} mt={10} />
+        <Box bg="#ccc" width={280} height={16} mt={10} />
+      </Box>
+      <Box row alignItems="center">
+        <Box bg="#ccc" width={100} height={30} mr={10} />
+        <Box bg="#ccc" width={64} height={64} borderRadius={100} />
+      </Box>
+      <Box my={10}>
+        <Box row>
+          <Box flex={1}>
+            <Box bg="#ccc" width={80} height={25} />
+            <Box bg="#ccc" width="100%" height={50} mt={5} />
+          </Box>
+          <Box
+            bg="#ccc"
+            ml={10}
+            mt={30}
+            width={60}
+            height={50}
+            borderRadius={10}
+          />
+        </Box>
+      </Box>
+      <Box>
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i, index) => (
+          <Box key={index} row my={5}>
+            <Box bg="#ccc" flex={1} height={40} borderRadius={10} />
+            <Box bg="#ccc" p={5} ml={5} borderRadius={10}>
+              <Box bg="#ccc" width={32} height={32} />
+            </Box>
+            <Box bg="#ccc" p={5} ml={5} borderRadius={10}>
+              <Box bg="#ccc" width={32} height={32} />
+            </Box>
+          </Box>
+        ))}
       </Box>
     </Box>
   );
 }
 
-export function TodoListPlaceholder() {
+function ErrorMessage({
+  errorMessage = 'Böyle bir kayıt bulunamadı!',
+  fontSize = 32,
+}) {
   return (
-    <Box>
-      <TextBox>hello from todo list placeholder</TextBox>
+    <Box flex={1} center>
+      <TextBox color="primary" fontSize={fontSize} textAlign="center">
+        {errorMessage}
+      </TextBox>
     </Box>
   );
 }
