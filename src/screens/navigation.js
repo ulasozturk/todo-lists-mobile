@@ -10,8 +10,8 @@ import {
   signOutThunk,
 } from '../redux/reducers/authentication';
 import { useTheme } from 'styled-components';
-import { Box, TextBox } from '../components';
 import axios from 'axios';
+import { Loading } from './loading';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,9 +54,7 @@ export function Navigation() {
   }, [auth.refreshToken, auth.expireDate]);
 
   return loading ? (
-    <Box>
-      <TextBox>Main placeholder</TextBox>
-    </Box>
+    <Loading theme={theme} />
   ) : (
     <NavigationContainer>
       <Stack.Navigator>
