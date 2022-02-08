@@ -6,10 +6,12 @@ import axios from 'axios';
 import { ThemeProvider } from 'styled-components';
 import { Navigation } from './screens/navigation';
 import { Loading } from './screens/loading';
+import RNBootSplash from 'react-native-bootsplash';
 
 axios.defaults.baseURL = 'https://todo-lists-server.herokuapp.com/api';
 
 export default function App() {
+  RNBootSplash.hide({ fade: true });
   const theme = store.getState().theme;
   return (
     <Provider store={store}>
