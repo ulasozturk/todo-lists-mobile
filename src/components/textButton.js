@@ -1,7 +1,8 @@
 import React from 'react';
 import { ButtonBox, TextBox } from './styled-components';
 import shadow from '../utils/shadowGenerator';
-import { ActivityIndicator } from './activityIndicator';
+import { useTheme } from 'styled-components';
+import Loading from 'react-native-spinkit';
 
 export function TextButton({
   children,
@@ -19,9 +20,12 @@ export function TextButton({
   radius = 40,
   p = 12,
   loading,
+  loadingSize = 24,
   textProps,
   ...rest
 }) {
+  const theme = useTheme();
+
   return (
     <ButtonBox
       onPress={loading ? undefined : onPress}
@@ -41,10 +45,11 @@ export function TextButton({
       alignSelf={fullWidth ? 'stretch' : 'flex-start'}
       {...rest}>
       {loading ? (
-        <ActivityIndicator
-          color={
-            variant == 'contained' ? 'white' : theme => theme.colors.primary
-          }
+        <Loading
+          isVisible
+          type="Wave"
+          size={loadingSize}
+          color={variant == 'contained' ? 'white' : theme.colors.primary}
         />
       ) : (
         <>

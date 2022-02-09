@@ -30,7 +30,8 @@ export function TodoList({
   return todoList ? (
     <Box
       as={ScrollView}
-      contentContainerStyle={{ padding: 10, flex: 1 }}
+      flex={1}
+      contentContainerStyle={{ padding: 10 }}
       keyboardShouldPersistTaps="handled">
       <Box row alignCenter>
         <TextBox
@@ -181,8 +182,10 @@ function AddTodo({ addTodoHandler, todoListID }) {
     <Box row>
       <TextInput
         label="Yeni Todo"
+        placeholder="Todo text girin..."
         value={text}
         onChangeText={setText}
+        onSubmitEditing={addTodo}
         errorMessage={
           errorMessage && text.length == 0 ? errorMessage : undefined
         }
@@ -195,7 +198,8 @@ function AddTodo({ addTodoHandler, todoListID }) {
         variant="contained"
         borderRadius={10}
         onPress={addTodo}
-        loading={loading}>
+        loading={loading}
+        loadingSize={27}>
         Ekle
       </TextButton>
     </Box>

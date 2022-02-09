@@ -1,5 +1,7 @@
 import React from 'react';
 import { Box, TextBox, TextInputBox } from './';
+import { useTheme } from 'styled-components';
+import { hslaAdjust } from '../utils/hslaAdjust';
 
 export function TextInput({
   value,
@@ -14,6 +16,8 @@ export function TextInput({
   containerProps,
   ...rest
 }) {
+  const theme = useTheme();
+
   return (
     <Box {...containerProps} {...rest}>
       <TextBox fontSize={18} color={errorMessage ? 'red' : 'primary'}>
@@ -25,6 +29,11 @@ export function TextInput({
         fontSize={16}
         color="primary"
         placeholder={placeholder}
+        placeholderTextColor={hslaAdjust({
+          color: theme.colors.primary,
+          l: 30,
+          s: -30,
+        })}
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
