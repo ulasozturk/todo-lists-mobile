@@ -13,6 +13,7 @@ import { AccountIcon, LoginIcon } from '../components/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Account, ModalButton, SignIn } from '../components/modals';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function TodoListsScreen() {
   const isAuthenticated = useIsAuthenticated();
@@ -28,13 +29,16 @@ function RemoteTodoLists() {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const theme = useTheme();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    axios.get('/todolists').then(res => {
-      setTodoLists(res.data);
-      setLoading(false);
-    });
-  }, []);
+    if (isFocused == true) {
+      axios.get('/todolists').then(res => {
+        setTodoLists(res.data);
+        setLoading(false);
+      });
+    }
+  }, [isFocused]);
 
   const addTodoListHandler = ({ title }, callback) => {
     axios
