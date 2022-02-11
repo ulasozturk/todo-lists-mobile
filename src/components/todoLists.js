@@ -32,7 +32,6 @@ export function TodoLists({
         contentContainerStyle={{
           paddingBottom: 75,
           paddingTop: 10,
-          flex: 1,
         }}
       />
       <ModalButton
