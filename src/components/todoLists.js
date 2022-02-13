@@ -32,6 +32,7 @@ export function TodoLists({
         contentContainerStyle={{
           paddingBottom: 75,
           paddingTop: 10,
+          flexGrow: 1,
         }}
       />
       <ModalButton
@@ -125,7 +126,7 @@ function ListEmptyComponent({ loading }) {
       </Box>
     </>
   ) : (
-    <Box flex={1} center>
+    <Box flex={1} center mb={-65}>
       <TextBox color="primary" fontSize={32} textAlign="center">
         Henüz bir Todo List oluşturmadınız
       </TextBox>

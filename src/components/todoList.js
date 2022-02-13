@@ -31,7 +31,7 @@ export function TodoList({
     <Box
       as={ScrollView}
       flex={1}
-      contentContainerStyle={{ padding: 10 }}
+      contentContainerStyle={{ padding: 10, flexGrow: 1 }}
       keyboardShouldPersistTaps="handled">
       <Box row alignCenter>
         <TextBox
