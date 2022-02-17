@@ -56,8 +56,8 @@ function RemoteTodoLists() {
     axios
       .delete(`/todolists/${_id}`)
       .then(() => {
-        setTodoLists(todoLists => todoLists.filter(i => i._id != _id));
         if (typeof callback == 'function') callback();
+        setTodoLists(todoLists => todoLists.filter(i => i._id != _id));
       })
       .catch(err => {
         if (typeof callback == 'function') callback(err.response);
