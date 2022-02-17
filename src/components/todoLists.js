@@ -6,6 +6,7 @@ import { Box, ButtonBox, ProgressCircle, TextBox } from './';
 import { Confirm, ModalButton, NewTodoList } from './modals';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
+import { shadow } from '../utils/shadowGenerator';
 
 export function TodoLists({
   todoLists,
@@ -41,6 +42,7 @@ export function TodoLists({
           as={TouchableHighlight}
           bg={theme.colors.primary}
           underlayColor={hslaAdjust({ color: theme.colors.primary, l: 40 })}
+          style={shadow(6)}
           position="absolute"
           bottom={10}
           right={10}
@@ -69,6 +71,7 @@ function RenderItem({ item: todoList, index, removeTodoListHandler }) {
         flex={1}
         p={20}
         bg={hslaAdjust({ color: theme.colors.primary, l: 60, s: -40 })}
+        style={shadow(3)}
         borderRadius={10}
         mx={5}
         justifyContent="center">
@@ -92,6 +95,7 @@ function RenderItem({ item: todoList, index, removeTodoListHandler }) {
           p={10}
           bg={hslaAdjust({ color: theme.colors.primary, l: 60, s: -40 })}
           borderRadius={10}
+          style={shadow(3)}
           alignSelf="stretch"
           justifyContent="center">
           <DeleteIcon fill={theme.colors.primary} />

@@ -3,6 +3,7 @@ import ProgressCircleModule from 'react-native-progress-circle';
 import { useTheme } from 'styled-components';
 import { DoneIcon, MoreIcon } from './icons';
 import { TextBox } from './';
+import { shadow } from '../utils/shadowGenerator';
 
 export function ProgressCircle({ todos }) {
   const theme = useTheme();
@@ -27,6 +28,7 @@ export function ProgressCircle({ todos }) {
       shadowColor="#c6c6c6"
       bgColor="#e9e9e9"
       radius={28}
+      outerCircleStyle={shadow(3)}
       borderWidth={4}>
       {todos.length == 0 ? (
         <MoreIcon fill={theme.colors.primary} />

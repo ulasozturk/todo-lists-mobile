@@ -17,6 +17,7 @@ import {
 import { DeleteIcon, EditIcon } from './icons';
 import { useTheme } from 'styled-components';
 import { hslaAdjust } from '../utils/hslaAdjust';
+import { shadow } from '../utils/shadowGenerator';
 
 export function TodoList({
   todoList,
@@ -49,7 +50,12 @@ export function TodoList({
               updateTodoListHandler={updateTodoListHandler}
             />
           }>
-          <ButtonBox bg="primary" ml={10} p={5} borderRadius={10}>
+          <ButtonBox
+            bg="primary"
+            ml={10}
+            p={5}
+            borderRadius={10}
+            style={shadow(3)}>
             <EditIcon fill="white" width={32} height={32} />
           </ButtonBox>
         </ModalButton>
@@ -192,6 +198,7 @@ function AddTodo({ addTodoHandler, todoListID }) {
         containerProps={{ flex: 1 }}
       />
       <TextButton
+        elevation={3}
         ml={10}
         mt={35}
         fontSize={20}
@@ -248,6 +255,7 @@ function TodoItem({ todo, todoListID, updateTodoHandler, removeTodoHandler }) {
             l: 60,
             s: -40,
           })}
+          style={shadow(3)}
           borderRadius={10}>
           <EditIcon fill={theme.colors.primary} width={32} height={32} />
         </ButtonBox>
@@ -269,6 +277,7 @@ function TodoItem({ todo, todoListID, updateTodoHandler, removeTodoHandler }) {
             l: 60,
             s: -40,
           })}
+          style={shadow(3)}
           borderRadius={10}>
           <DeleteIcon fill={theme.colors.primary} width={32} height={32} />
         </ButtonBox>

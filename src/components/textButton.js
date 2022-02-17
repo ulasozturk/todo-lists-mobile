@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonBox, TextBox } from './styled-components';
-import shadow from '../utils/shadowGenerator';
+import { shadow } from '../utils/shadowGenerator';
 import { useTheme } from 'styled-components';
 import Loading from 'react-native-spinkit';
 

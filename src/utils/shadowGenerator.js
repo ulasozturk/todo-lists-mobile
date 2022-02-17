@@ -3,7 +3,7 @@ const shadowsRadius = [
   9.11, 9.51, 10.32, 11.14, 11.95, 12.35, 13.16, 13.97, 14.78, 15.19, 16.0,
 ];
 
-export default function shadow(p) {
+export function shadow(p) {
   const elevation = Math.min(24, Math.max(0, p));
   return {
     shadowColor: '#000',
